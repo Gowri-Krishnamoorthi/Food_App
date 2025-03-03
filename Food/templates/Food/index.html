@@ -1,24 +1,53 @@
-<!-- <!DOCTYPE html>
+{% extends 'food/base.html' %}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
-    <title>Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodApp</title>
+
 </head>
 <body>
-    <h1>This is just a template</h1>
+    {% block body %}
+    
+    {% for item in item_list %}
+        
+       <div class="row">
+           <div class="col-md-3 offset-md-2">
+              <img class="card" height="100px" src="{{ item.item_image }}">
+        </div>
+        <div class="col-md-4">
+            <h3>Item Name: {{ item.item_name|default:"Not Available" }}</h3>
+            <h5>Description: {{ item.item_desc|default:"No Description" }}</h5>
+            <h6>Price: ${{ item.item_price|default:"0.00" }}</h6>
+
+
+        </div>
+        <div class="col-md-2">
+
+        </div>
+       </div>
+
+    {% endfor %}
+
+    {% endblock %}
+
+
+    {% comment %}
+    old code
+    {% block body %}
+    <div class="container mt-4">
+        {% for item in item_list %}
+            <ul>
+                <li>
+                    <!-- Namespaced URL to avoid conflicts -->
+                    <a href="{% url 'food:details' item.id %}"> {{ item.id }} --- {{ item.item_name }} </a>
+                </li>
+            </ul>
+        {% endfor %}
+    </div>
+   {% endblock %}
+   {% endcomment %}
+
 </body>
-</html> -->
-
-{% for item in item_list %}
-
-
-   <ul>
-      <li>
-           <!-- {{ item.id }} --- {{ item.item_name }} --> 
-
-           <a href="/food/{{item.id}}"> {{ item.id }} --- {{ item.item_name }} </a>
-      </li>
-   </ul>
-
-{% endfor %}
+</html>
