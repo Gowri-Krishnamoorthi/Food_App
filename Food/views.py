@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render , redirect
 from django.http import HttpResponse
 # Create your views here.
 from .models import Item
 from django.template import loader
+from .form import ItemForm
 
 def index(request):
     item_list = Item.objects.all()
@@ -25,3 +26,22 @@ def details(request,item_id):
     }
     #return HttpResponse("This is item id no/id: %s" % item_id)
     return render(request , 'food/details.html' , context)
+
+def add_item(request):
+    form = ItemForm(request.POST or None)
+
+    if form.is_valid():
+        form.save()
+        return redirect('food:index')
+    
+    return render(request, 'food/add_item.html', {'form' : form})
+
+def update_item(request, item_id):
+    item = get_object_or_404(Item, pk=item_id)  # This prevents DoesNotExist error
+    form = ItemForm(request.POST or None, instance=item)  # Pre-fill the form
+
+    if form.is_valid():
+        form.save()
+        return redirect('food:index')  # Redirect to index after updating
+
+    return render(request, 'food/add_item.html', {'form': form, 'item': item})  # Use a proper template
