@@ -24,6 +24,9 @@
                ${{ item.item_price}}
            </h1>
            <a href="{% url 'food:update' item.id %}" class="btn btn-success">update</a>
+
+           <a href="{% url 'food:delete' item.id %}" class="btn btn-success">Delete</a>
+
         </div>
       </div>
    </div>

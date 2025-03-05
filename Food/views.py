@@ -45,3 +45,13 @@ def update_item(request, item_id):
         return redirect('food:index')  # Redirect to index after updating
 
     return render(request, 'food/add_item.html', {'form': form, 'item': item})  # Use a proper template
+
+def delete_item(request, item_id):
+    item = get_object_or_404(Item, pk=item_id)
+    
+    if request.method == 'POST':
+        item.delete()
+        return redirect('food:index')
+    
+    return render(request,'food/delete_item.html', {'item':item})
+    
