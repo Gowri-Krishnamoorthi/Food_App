@@ -5,12 +5,14 @@
     {% for item in item_list %}
         <div class="row mb-3">
             <div class="col-md-3 offset-md-2">
-                <img class="card img-fluid" height="100px" src="{{ item.item_image }}" alt="{{ item.item_name }}">
+                <img class="card img-fluid" height="300px" width="300px" src="{{ item.item_image }}" alt="{{ item.item_name }}">
             </div>
             <div class="col-md-4">
                 <h3>Item Name: {{ item.item_name|default:"Not Available" }}</h3>
                 <h5>Description: {{ item.item_desc|default:"No Description" }}</h5>
                 <h6>Price: ${{ item.item_price|default:"0.00" }}</h6>
+                <h6>Price: ${{ item.user_name }}</h6>
+
             </div>
             <div class="col-md-2">
                 <a href="{% url 'food:details' item.id %}" class="btn btn-success">Details</a>

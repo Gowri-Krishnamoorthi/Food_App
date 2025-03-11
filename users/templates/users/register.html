@@ -1,5 +1,92 @@
-<form method="POST">
+{% extends 'food/base.html' %}
+
+{% block body %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-5">
+        <div class="card shadow-lg border-0 rounded">
+            <div class="card-header bg-info text-white text-center">
+                <h3 class="mb-0">Sign Up</h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" class="text-center">
+                    {% csrf_token %}
+
+                    {% for field in form %}
+                        <!-- Ensure we are not printing fields twice -->
+                        {% if field.name != "email_confirm" %}
+                        <div class="form-group mb-3 mx-auto" style="width: 80%;">
+                            <label class="fw-bold d-block text-start">{{ field.label }}</label>
+
+                            {% if field.field.widget.input_type == "password" %}
+                                <div class="input-group">
+                                    <input type="password" name="{{ field.name }}" id="{{ field.auto_id }}" 
+                                           class="form-control text-center input-box" required>
+                                    <button class="btn btn-outline-secondary togglePassword" type="button" data-target="{{ field.auto_id }}">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            {% else %}
+                                <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" 
+                                       class="form-control text-center input-box" required>
+                            {% endif %}
+
+                            {% if field.errors %}
+                                <div class="text-danger small">
+                                    {{ field.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+                    {% endfor %}
+
+                    <button class="btn btn-info w-75 text-white fw-bold mt-3" type="submit">Sign Up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript for Password Toggle -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".togglePassword").forEach(button => {
+            button.addEventListener("click", function () {
+                const target = document.getElementById(this.dataset.target);
+                const type = target.type === "password" ? "text" : "password";
+                target.type = type;
+                this.innerHTML = type === "password" ? '<i class="bi bi-eye"></i>' : '<i class="bi bi-eye-slash"></i>';
+            });
+        });
+    });
+</script>
+
+<!-- Include Bootstrap Icons -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+<!-- Custom CSS for Consistent Input Size -->
+<style>
+    .input-box {
+        height: 45px; /* Set uniform height */
+        width: 100%;  /* Make width consistent */
+        border-radius: 5px; /* Rounded corners */
+        border: 1px solid #ced4da; /* Bootstrap-like border */
+        padding: 10px;
+    }
+</style>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+<!-- <form method="POST">
     {% csrf_token %}
     {{ form }}
     <button type="submit">SignUp</button>
-</form>
+</form> -->

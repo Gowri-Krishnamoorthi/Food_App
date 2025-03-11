@@ -50,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',  # ✅ This should be enabled
+
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -124,6 +126,8 @@ LOGIN_REDIRECT_URL = '/food/' # Redirect to dashboard after login
 LOGIN_URL = 'login'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'pictures')
 MEDIA_URL = '/pictures/'
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
