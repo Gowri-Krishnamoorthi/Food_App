@@ -8,6 +8,7 @@ from .form import ItemForm
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # def index(request):
 #     item_list = Item.objects.all()
@@ -50,15 +51,18 @@ def add_item(request):
     
     return render(request, 'food/add_item.html', {'form' : form})
 
-class Add_Item(CreateView):
+class Add_Item(LoginRequiredMixin, CreateView):
     model = Item
     fields = ['item_name', 'item_desc', 'item_price', 'item_image']
     template_name = 'food/add_item.html'
-    success_url = reverse_lazy('food:index')  # Redirect to a valid page after submission
+    success_url = reverse_lazy('food:index')  # Redirect after successful submission
 
     def form_valid(self, form):
-        form.instance.user_name = self.request.user
-        return super().form_valid(form)
+        if self.request.user.is_authenticated:  # ✅ Ensure user is logged in
+            form.instance.user_name = self.request.user
+            return super().form_valid(form)
+        else:
+            return self.handle_no_permission()  # Redirect to LOGIN_URL (settings.py)
 
 
 def update_item(request, item_id):

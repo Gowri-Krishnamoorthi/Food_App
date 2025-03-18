@@ -1,12 +1,47 @@
 {% extends 'food/base.html' %}
+
 {% block body %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="col-md-6">
+        <div class="card shadow-lg border-0 rounded">
+            <div class="card-header bg-info text-white text-center">
+                <h3 class="mb-0">Add New Item</h3>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" class="text-center">
+                    {% csrf_token %}
 
-<form method="post">
+                    {% for field in form %}
+                        <div class="form-group mb-3 mx-auto" style="width: 80%;">
+                            <label class="fw-bold d-block text-start">{{ field.label }}</label>
+                            
+                            <input type="{{ field.field.widget.input_type }}" name="{{ field.name }}" 
+                                   id="{{ field.auto_id }}" class="form-control text-center input-box"
+                                   value="{{ field.value|default:'' }}" required>
+                            
+                            {% if field.errors %}
+                                <div class="text-danger small">
+                                    {{ field.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
 
-    {% csrf_token %}
-    {{ form }}
+                    <button class="btn btn-info w-75 text-white fw-bold mt-3" type="submit">Save Item</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-    <button type="submit">SAVE</button>
-</form>
-
+<!-- Custom CSS for Consistent Input Size -->
+<style>
+    .input-box {
+        height: 45px; /* Set uniform height */
+        width: 100%;  /* Make width consistent */
+        border-radius: 5px; /* Rounded corners */
+        border: 1px solid #ced4da; /* Bootstrap-like border */
+        padding: 10px;
+    }
+</style>
 {% endblock %}
